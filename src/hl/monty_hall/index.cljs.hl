@@ -1,11 +1,36 @@
 (page "index.html"
   (:require
+    [javelin.core :as j :refer [cell]
+     :refer-macros [cell= defc defc= cell-let with-let]]
     [monty-hall.rpc :as rpc]))
 
 (rpc/init)
 
+(defc choice nil)
+
+(def doors
+  (clojure.core/shuffle[:car :goat :goat]))
+
+(defelem door-elem [{:keys [door]} _]
+         (let [show? (cell false)
+               image (cell= (if (= door :car)
+                              "http://buyersguide.caranddriver.com/media/assets/submodel/7651.jpg"
+                              "https://extension.unh.edu/sites/default/files/images/4HAnSci/side-view-sheep250.png"))]
+              (td
+                (if-tpl show?
+                  (img :src image :width 400)
+                  (img :src "http://clipartoons.com/wp-content/uploads/2016/01/front-door-clipart-free.png"
+                       :click #(reset! show? true))))))
+
 (html
   (head
+    (title "The Monty Hall")
     (link :href "app.css" :rel "stylesheet"))
   (body
-    (h1 :style "color: pink"(text "Monty Hall"))))
+    (h1 :style "color: pink"
+        (text "Monty Hall"))
+    ;(h1 (str doors))
+    (table
+      (tr
+        (for-tpl [door doors]
+                   (door-elem :door door))))))
