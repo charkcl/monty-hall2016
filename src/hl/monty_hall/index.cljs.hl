@@ -1,0 +1,11 @@
+(page "index.html"
+  (:require
+    [monty-hall.rpc :as rpc]))
+
+(rpc/init)
+
+(html
+  (head
+    (link :href "app.css" :rel "stylesheet"))
+  (body
+    (h1 :style "color: pink"(text "Monty Hall"))))
