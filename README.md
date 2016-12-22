@@ -1,7 +1,6 @@
 # Monty-Hall
 
-A Hoplon implementation of the Monty-Hall show door game experiment:
-[https://monty-hall2016.herokuapp.com/]
+A Hoplon implementation of the [Monty-Hall show door game experiment][6].
 
 ## Dependencies
 
@@ -35,20 +34,20 @@ A Hoplon implementation of the Monty-Hall show door game experiment:
 
 ### Deployment
 
-You can easily deploy this application for free to [Heroku][3].
+Application deployed to [Heroku][3].
 
 1. Get a Heroku account and install the [Heroku toolbelt][4]
 1. Create an application in the Heroku dashboard
 1. Build a WAR file with `boot make-war`
-1. Follow [these instructions][5] to deploy the WAR to Heroku using the `heroku` tool.
+1. Follow [these instructions][5] to deploy the WAR to Heroku using the `heroku-cli-deploy` tool.
 
 ## License
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
-Copyright © 2016, **Your Name Goes Here**
 
 [1]: http://boot-clj.com
 [2]: http://localhost:8000
 [3]: https://www.heroku.com/
 [4]: https://toolbelt.heroku.com/
-[5]: https://devcenter.heroku.com/articles/war-deployment#deployment-with-the-heroku-toolbelt
+[5]: https://github.com/heroku/heroku-cli-deploy
+[6]: https://monty-hall2016.herokuapp.com/
