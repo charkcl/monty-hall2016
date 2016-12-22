@@ -1,6 +1,7 @@
 # Monty-Hall
 
-A Hoplon example of Monty-Hall
+A Hoplon implementation of the Monty-Hall show door game experiment:
+[https://monty-hall2016.herokuapp.com/]
 
 ## Dependencies
 
@@ -24,7 +25,7 @@ A Hoplon example of Monty-Hall
 3. If you edit and save a file, the task will recompile the code and reload the
    browser to show the updated version.
 
-.### Production
+### Production
 1. Run the `prod` task. In a terminal run:
     ```bash
     $ boot prod
@@ -43,6 +44,7 @@ You can easily deploy this application for free to [Heroku][3].
 
 ## License
 
+Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
 Copyright © 2016, **Your Name Goes Here**
 
 [1]: http://boot-clj.com

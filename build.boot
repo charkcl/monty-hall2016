@@ -18,7 +18,7 @@
   '[tailrecursion.boot-jetty    :refer [serve]])
 
 (deftask dev
-  "Build test-project for local development."
+  "Build project for local development."
   []
   (comp
     (watch)
@@ -30,7 +30,7 @@
     (serve :port 8000)))
 
 (deftask prod
-  "Build test-project for production deployment."
+  "Build project for production deployment."
   []
   (comp
     (hoplon)
