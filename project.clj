@@ -2,8 +2,7 @@
   boot-project
   "0.0.0-SNAPSHOT"
   :repositories
-  [
-   ;["clojars" {:url "https://repo.clojars.org/"}]
+  [["clojars" {:url "https://repo.clojars.org/"}]
    ["maven-central" {:url "https://repo1.maven.org/maven2"}]]
   :dependencies
   [[org.clojure/clojurescript "1.9.293"]
@@ -19,5 +18,4 @@
   :source-paths
   ["src/hl" "src/cljs"]
   :resource-paths
-  ["src/clj" "resources"]
-  :uberjar-name "monty-hall2016.jar")
+  ["src/clj" "resources"])
