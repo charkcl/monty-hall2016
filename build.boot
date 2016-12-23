@@ -7,7 +7,8 @@
                   [hoplon/castra             "3.0.0-alpha7"]
                   [tailrecursion/boot-jetty  "0.1.3"]
                   [ring                      "1.6.0-beta6"]
-                  [ring/ring-defaults        "0.3.0-beta1"]]
+                  [ring/ring-defaults        "0.3.0-beta1"]
+                  [onetom/boot-lein-generate "0.1.3" :scope "test"]]
   :resource-paths #{"resources" "src/clj"}
   :source-paths   #{"src/cljs" "src/hl"})
 
@@ -15,7 +16,10 @@
   '[adzerk.boot-cljs            :refer [cljs]]
   '[adzerk.boot-reload          :refer [reload]]
   '[hoplon.boot-hoplon          :refer [hoplon prerender]]
-  '[tailrecursion.boot-jetty    :refer [serve]])
+  '[tailrecursion.boot-jetty    :refer [serve]]
+  'boot.lein)
+
+(boot.lein/generate)
 
 (deftask dev
   "Build project for local development."
