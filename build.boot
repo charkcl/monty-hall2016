@@ -17,7 +17,7 @@
   '[adzerk.boot-reload          :refer [reload]]
   '[hoplon.boot-hoplon          :refer [hoplon prerender]]
   '[tailrecursion.boot-jetty    :refer [serve]]
-  'boot.lein)
+  '[boot.lein])
 
 (boot.lein/generate)
 

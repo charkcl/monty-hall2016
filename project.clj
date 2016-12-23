@@ -18,4 +18,5 @@
   :source-paths
   ["src/hl" "src/cljs"]
   :resource-paths
-  ["src/clj" "resources"])
+  ["src/clj" "resources"]
+  :uberjar-name "monty-hall2016.jar")
