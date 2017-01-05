@@ -6,50 +6,49 @@
 
 ;(rpc/init)
 
-(def car-image "/car.jpg")
-(def sheep-image "/sheep.png")
-(def door-image "/closed-door.png")
-
 (defc prizes [:car :goat1 :goat2])
 (defc first-choice nil)
 (defc second-choice nil)
-(defc show nil)
+(defc disclosed nil)
 
 (defn door-elem [prize]
-      (let [show?  (cell= (= prize show))
+      (let [car-image "/car.jpg"
+            sheep-image "/sheep.png"
+            door-image "/closed-door.png"
             border (cell= (if (= prize (or second-choice first-choice))
                             "1px solid pink"
                             nil))
-            image  (cell= (if (= prize :car)
+            image (cell= (if (= prize :car)
                            car-image
                            sheep-image))
-            open   (fn [prize] (reset! show
-                                     (rand-nth (filter #(not= % @first-choice) (filter #(not= % :car) @prizes)))))
+            filters [#(not= % @first-choice) #(not= % :car)]
+            open #(reset! disclosed
+                         (->> @prizes
+                              (filter (apply every-pred filters))
+                              rand-nth))
             choose (fn [prize]
-                       (when (and @first-choice (nil? @second-choice) (not= @prize @show))
+                       (when (and @first-choice (nil? @second-choice) (not= @prize @disclosed))
                              (dosync (reset! second-choice @prize)))
                        (when (nil? @first-choice)
                              (do (reset! first-choice @prize)
-                                 (open @prize))))]
+                                 (open))))]
            (td
-             (if-tpl (cell= (or show? second-choice))
+             (if-tpl (cell= (or (= prize disclosed) second-choice))
                      (img :src image :width 200 :style (cell= (str "border:" border)))
-                     (img :src door-image :width 200 :style (cell= (str "border:" border))
+                     (img :src door-image :width 200 :style (cell= (str "border:" border "; cursor: pointer"))
                           :click #(choose prize))))))
 
-
 (defn caption-elem []
-      (let [door-num (fn [v]
-                         (+ (.indexOf @prizes v) 1))]
+      (let [door-num #(+ (.indexOf @prizes %) 1)]
            (div :style "width: 650px"
                 (cond-tpl
                   (cell= (nil? first-choice))
                   (h3 "Behind one of these doors is a car.\n
-           Behind each of the other two doors is a goat.\n
-           Click on the door that you think the car is behind.")
+                       Behind each of the other two doors is a goat.\n
+                       Click on the door that you think the car is behind.")
                   (cell= (and first-choice (nil? second-choice)))
                   (h3 (cell= (str "Obviously the car is not behind Door "
-                                  (door-num show)
+                                  (door-num disclosed)
                                   ". You have chosen Door "
                                   (door-num first-choice)
                                   ". You may change your choice if you like.
@@ -66,6 +65,7 @@
                                     (str " and then switched to Door "
                                          (door-num second-choice)
                                          ".")))))))))
+
 (html
   (head
     (title "The Monty Hall")
@@ -75,12 +75,11 @@
         (text "Monty Knows"))
     (button :click #(dosync (reset! first-choice nil)
                             (reset! second-choice nil)
-                            (reset! show nil)
+                            (reset! disclosed nil)
                             (swap! prizes shuffle))
             "Reset")
     (table
       (tr
         (for-tpl [prize prizes]
                  (door-elem prize))))
-
     (caption-elem)))
