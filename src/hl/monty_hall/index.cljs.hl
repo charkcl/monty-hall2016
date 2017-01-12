@@ -12,7 +12,7 @@
 (defc disclosed nil)
 
 (defn door-elem [prize]
-      (let [car-image "/car.jpg"
+      (let [car-image "/car.png"
             sheep-image "/sheep.png"
             door-image "/closed-door.png"
             border (cell= (if (= prize (or second-choice first-choice))
@@ -23,9 +23,9 @@
                            sheep-image))
             filters [#(not= % @first-choice) #(not= % :car)]
             open #(reset! disclosed
-                         (->> @prizes
-                              (filter (apply every-pred filters))
-                              rand-nth))
+                          (->> @prizes
+                               (filter (apply every-pred filters))
+                               rand-nth))
             choose (fn [prize]
                        (when (and @first-choice (nil? @second-choice) (not= @prize @disclosed))
                              (dosync (reset! second-choice @prize)))
@@ -40,46 +40,50 @@
 
 (defn caption-elem []
       (let [door-num #(+ (.indexOf @prizes %) 1)]
-           (div :style "width: 650px"
+           (div :style "width: 60%; margin: 0px auto; text-align: center;"
                 (cond-tpl
                   (cell= (nil? first-choice))
-                  (h3 "Behind one of these doors is a car.\n
-                       Behind each of the other two doors is a goat.\n
-                       Click on the door that you think the car is behind.")
+                  (div
+                    (h3 "Behind one of these doors is a car.")
+                    (h3 "Behind each of the other two doors is a goat.")
+                    (h3 "Click on the door that you think the car is behind."))
                   (cell= (and first-choice (nil? second-choice)))
-                  (h3 (cell= (str "Obviously the car is not behind Door "
-                                  (door-num disclosed)
-                                  ". You have chosen Door "
-                                  (door-num first-choice)
-                                  ". You may change your choice if you like.
-                                  Again, click on the door which you think the car is behind."
-                                  )))
+                  (div
+                    (h3 (cell= (str "You have chosen Door "
+                                    (door-num first-choice) ".")))
+                    (h3 (cell= (str "Obviously, the car is not behind Door "
+                                    (door-num disclosed) ".")))
+                    (h3 "You may change your choice if you like.
+                                       Again, click on the door which you think the car is behind."))
                   (cell= (and first-choice second-choice))
-                  (h3 (cell= (str (if (= second-choice :car)
-                                    "CONGRATULATIONS! You WON!"
-                                    "YOU LOST!!")
-                                  " RECAP: You originally picked Door "
-                                  (door-num first-choice)
+                  (div (h3
+                         (cell= (str (if (= second-choice :car)
+                                       "CONGRATULATIONS! You won!"
+                                       "SORRY, you lost!!"))))
+                       (h3 (cell= (str " RECAP: You originally picked Door "
+                                       (door-num first-choice) ".")
                                   (if (= first-choice second-choice)
                                     " and then stayed with that door."
                                     (str " and then switched to Door "
-                                         (door-num second-choice)
-                                         ".")))))))))
+                                         (door-num second-choice) ".")))))))))
+
+(swap! prizes shuffle)
 
 (html
   (head
     (title "The Monty Hall")
     (link :href "app.css" :rel "stylesheet"))
   (body
-    (h1 :style "color: pink"
-        (text "Monty Knows"))
-    (button :click #(dosync (reset! first-choice nil)
+    (h1 :style "color: pink" :align "center"
+        (text "Stay or Switch?"))
+    (button :style "margin : auto ;display : block;"
+            :click #(dosync (reset! first-choice nil)
                             (reset! second-choice nil)
                             (reset! disclosed nil)
                             (swap! prizes shuffle))
             "Reset")
-    (table
-      (tr
-        (for-tpl [prize prizes]
-                 (door-elem prize))))
+    (table :align "center"
+           (tr
+             (for-tpl [prize prizes]
+                      (door-elem prize))))
     (caption-elem)))
